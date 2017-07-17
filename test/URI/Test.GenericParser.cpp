@@ -128,5 +128,14 @@ namespace URI
 				examiner.expect(buffer.str()) == text;
 			}
 		},
+		
+		// {"it can parse unicode",
+		// 	[](UnitTest::Examiner & examiner) {
+		// 		std::string text = "//welcome/index?utf8=✓";
+		// 		auto generic = Generic::parse(text);
+		// 		
+		// 		examiner.expect(generic.query) == "utf8=✓";
+		// 	}
+		// }
 	};
 }
