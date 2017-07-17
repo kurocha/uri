@@ -18,6 +18,8 @@ namespace URI
 		// Characters which can appear anywhere in an URI without any encoding.
 		bool is_unreserved(unsigned char);
 		
+		// The following predicates will generate pretty URIs which are not strictly RFC compliant. However, they should be compatible with all major web browsers and other systems. The URIs will be slightly more human readable. If you don't want this behaviour, use is_unreserved for all encoding.
+		
 		// Characters which can appear within the query portion of a URI without any encoding.
 		bool is_query_unreserved(unsigned char);
 		
@@ -29,18 +31,18 @@ namespace URI
 		std::string decode(const std::string & string);
 		
 		template <typename IteratorT>
-		std::string encode_query(IteratorT begin, IteratorT end)
+		std::string encode_query(IteratorT begin, IteratorT end, bool(*is_safe)(unsigned char) = is_query_unreserved)
 		{
 			std::stringstream buffer;
 			
 			if (begin != end) {
-				buffer << encode(begin->first, is_query_unreserved) << '=' << encode(begin->second, is_query_unreserved);
+				buffer << encode(begin->first, is_safe) << '=' << encode(begin->second, is_safe);
 				
 				++begin;
 			}
 			
 			while (begin != end) {
-				buffer << '&' << encode(begin->first, is_query_unreserved) << '=' << encode(begin->second, is_query_unreserved);
+				buffer << '&' << encode(begin->first, is_safe) << '=' << encode(begin->second, is_safe);
 				
 				++begin;
 			}
@@ -49,18 +51,18 @@ namespace URI
 		}
 		
 		template <typename IteratorT>
-		std::string encode_path(IteratorT begin, IteratorT end)
+		std::string encode_path(IteratorT begin, IteratorT end, bool(*is_safe)(unsigned char) = is_path_unreserved)
 		{
 			std::stringstream buffer;
 			
 			if (begin != end) {
-				buffer << encode(*begin, is_path_unreserved);
+				buffer << encode(*begin, is_safe);
 				
 				++begin;
 			}
 			
 			while (begin != end) {
-				buffer << '/' << encode(*begin, is_path_unreserved);
+				buffer << '/' << encode(*begin, is_safe);
 				
 				++begin;
 			}
