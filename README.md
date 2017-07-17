@@ -81,6 +81,12 @@ auto path = Path(components.begin(), components.end());
 
 It will correctly encode characters.
 
+### International Resource Identifiers
+
+IRIs as defined in [RFC3987](rfc) are not currently supported.
+
+[rfc3987]: https://www.ietf.org/rfc/rfc3987.txt
+
 ## Contributing
 
 1. Fork it.
