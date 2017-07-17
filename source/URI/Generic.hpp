@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "Path.hpp"
+#include "Query.hpp"
+
 #include <string>
 #include <iosfwd>
 
@@ -15,12 +18,14 @@ namespace URI
 {
 	struct Generic
 	{
+		static Generic parse(const std::string & value);
+		
 		std::string scheme;
 		std::string userinfo;
 		std::string host;
 		std::string port;
-		std::string path;
-		std::string query;
+		Path path;
+		Query query;
 		std::string fragment;
 		
 		/// A relative URI is any URI that doesn't explicitly specify the protocol/host, and must be resolved relative to a absolute URI.
@@ -29,6 +34,8 @@ namespace URI
 		
 		bool operator==(const Generic & other) const noexcept;
 		bool operator!=(const Generic & other) const noexcept;
+		
+		Generic operator+(const Generic & other);
 	};
 	
 	// According to https://tools.ietf.org/html/rfc3986#section-3.3, we escape non-pchar using % encoding.

@@ -9,23 +9,22 @@
 #pragma once
 
 #include <string>
-#include <iosfwd>
 
 namespace URI
 {
-	class Path {
-	public:
+	// Assumes percent encoded path components.
+	struct Path {
 		constexpr static const char SEPARATOR = '/';
-
-	public:
-		Path();
-		Path(const std::string & value);
-		Path(const char * value);
-
-		const std::string & value() const noexcept {return _value;}
-
-		bool empty () const {return _value.size() == 0;}
-		explicit operator bool() const {return !empty();}
+		
+		Path() {}
+		
+		template <typename ValueT>
+		Path(const ValueT & value_) : value(value_) {}
+		
+		std::string value;
+		
+		bool empty () const noexcept {return value.empty();}
+		explicit operator bool() const noexcept {return !empty();}
 		
 		/// Does the path begin with a "/"?
 		bool is_absolute() const;
@@ -51,15 +50,12 @@ namespace URI
 		// Given a path of the form "/.../x.y" return "y".
 		std::string extension() const;
 		
-		bool operator==(const Path & other) const {return _value == other._value;}
-		bool operator!=(const Path & other) const {return _value != other._value;}
-		bool operator<(const Path & other) const {return _value < other._value;}
-		bool operator<=(const Path & other) const {return _value <= other._value;}
-		bool operator>(const Path & other) const {return _value > other._value;}
-		bool operator>=(const Path & other) const {return _value >= other._value;}
-		
-	protected:
-		std::string _value;
+		bool operator==(const Path & other) const {return value == other.value;}
+		bool operator!=(const Path & other) const {return value != other.value;}
+		bool operator<(const Path & other) const {return value < other.value;}
+		bool operator<=(const Path & other) const {return value <= other.value;}
+		bool operator>(const Path & other) const {return value > other.value;}
+		bool operator>=(const Path & other) const {return value >= other.value;}
 	};
 
 	std::ostream & operator<<(std::ostream & output, const Path & path);

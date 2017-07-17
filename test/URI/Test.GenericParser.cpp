@@ -1,5 +1,5 @@
 //
-//  Test.Parser.cpp
+//  Test.GenericParser.cpp
 //  This file is part of the "URI" project and released under the MIT License.
 //
 //  Created by Samuel Williams on 15/7/2017.
@@ -8,21 +8,21 @@
 
 #include <UnitTest/UnitTest.hpp>
 
-#include <URI/Parser.hpp>
+#include <URI/GenericParser.hpp>
 
 namespace URI
 {
-	UnitTest::Suite ParserTestSuite {
-		"URI::Parser",
+	UnitTest::Suite GenericParserTestSuite {
+		"URI::GenericParser",
 		
 		{"it can parse absolute url",
 			[](UnitTest::Examiner & examiner) {
 				Generic generic;
-				Parser parser(generic);
+				GenericParser generic_parser(generic);
 				
 				std::string text = "http://foo:bar@www.oriontransfer.co.nz/welcome/index";
 				
-				parser.parse(text);
+				generic_parser.parse(text);
 				
 				examiner.expect(generic.scheme) == "http";
 				examiner.expect(generic.userinfo) == "foo:bar";
@@ -41,11 +41,11 @@ namespace URI
 		{"it can parse absolute url with ipv4 address",
 			[](UnitTest::Examiner & examiner) {
 				Generic generic;
-				Parser parser(generic);
+				GenericParser generic_parser(generic);
 				
 				std::string text = "http://127.0.0.1:8080";
 				
-				parser.parse(text);
+				generic_parser.parse(text);
 				
 				examiner.expect(generic.scheme) == "http";
 				examiner.expect(generic.userinfo) == "";
@@ -64,11 +64,11 @@ namespace URI
 		{"it can parse absolute url with ipv6 address",
 			[](UnitTest::Examiner & examiner) {
 				Generic generic;
-				Parser parser(generic);
+				GenericParser generic_parser(generic);
 				
 				std::string text = "http://[::1]:8080";
 				
-				parser.parse(text);
+				generic_parser.parse(text);
 				
 				examiner.expect(generic.scheme) == "http";
 				examiner.expect(generic.userinfo) == "";
@@ -87,11 +87,11 @@ namespace URI
 		{"it can parse relative url",
 			[](UnitTest::Examiner & examiner) {
 				Generic generic;
-				Parser parser(generic);
+				GenericParser generic_parser(generic);
 				
 				std::string text = "welcome/index";
 				
-				parser.parse(text);
+				generic_parser.parse(text);
 				
 				examiner.expect(generic.scheme) == "";
 				examiner.expect(generic.userinfo) == "";
@@ -110,11 +110,11 @@ namespace URI
 		{"it can parse relative url with query & fragment",
 			[](UnitTest::Examiner & examiner) {
 				Generic generic;
-				Parser parser(generic);
+				GenericParser generic_parser(generic);
 				
 				std::string text = "welcome/index?fruit[]=apple&fruit[]=orange#first";
 				
-				parser.parse(text);
+				generic_parser.parse(text);
 				
 				examiner.expect(generic.scheme) == "";
 				examiner.expect(generic.userinfo) == "";
@@ -133,11 +133,11 @@ namespace URI
 		{"it can parse relative url with host",
 			[](UnitTest::Examiner & examiner) {
 				Generic generic;
-				Parser parser(generic);
+				GenericParser generic_parser(generic);
 				
 				std::string text = "//welcome/index";
 				
-				parser.parse(text);
+				generic_parser.parse(text);
 				
 				examiner.expect(generic.scheme) == "";
 				examiner.expect(generic.userinfo) == "";

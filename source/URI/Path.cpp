@@ -78,38 +78,26 @@ namespace URI
 
 		return result;
 	}
-	
-	Path::Path()
-	{
-	}
-	
-	Path::Path(const std::string & value) : _value(value)
-	{
-	}
-	
-	Path::Path(const char * value) : _value(value)
-	{
-	}
 
 	bool Path::is_absolute() const {
-		return !_value.empty() && _value.front() == SEPARATOR;
+		return !value.empty() && value.front() == SEPARATOR;
 	}
 
 	bool Path::is_directory() const {
-		return !_value.empty() && _value.back() == SEPARATOR;
+		return !value.empty() && value.back() == SEPARATOR;
 	}
 
 	Path Path::directory() const {
 		if (is_directory()) return *this;
 		
-		std::string copy = _value;
+		std::string copy = value;
 		pop(copy, SEPARATOR);
 		
 		return copy;
 	}
 
 	Path Path::simplify() const {
-		return URI::simplify(_value, SEPARATOR);
+		return URI::simplify(value, SEPARATOR);
 	}
 	
 	Path Path::operator+(const Path & other) const
@@ -117,38 +105,38 @@ namespace URI
 		if (other.is_absolute()) return other;
 		
 		if (is_directory()) {
-			return _value + other._value;
+			return value + other.value;
 		} else {
-			return directory()._value + other._value;
+			return directory().value + other.value;
 		}
 	}
 	
 	// Path Path::operator+(const std::string & other) const
 	// {
-	// 	return _value + other;
+	// 	return value + other;
 	// }
 	
 	Path Path::base_name() const
 	{
-		auto position = _value.rfind(SEPARATOR);
+		auto position = value.rfind(SEPARATOR);
 
 		if (position == std::string::npos) {
-			return _value;
+			return value;
 		} else {
 			// We don't want to include the preceeding separator.
 			position += 1;
-			return _value.substr(position, _value.size() - position);
+			return value.substr(position, value.size() - position);
 		}
 	}
 	
 	Path Path::directory_name() const
 	{
-		auto position = _value.rfind(SEPARATOR);
+		auto position = value.rfind(SEPARATOR);
 
 		if (position == std::string::npos) {
 			return "";
 		} else {
-			auto start = _value.rfind(SEPARATOR, position - 1);
+			auto start = value.rfind(SEPARATOR, position - 1);
 			
 			if (start == std::string::npos) {
 				start = 0;
@@ -156,15 +144,15 @@ namespace URI
 				start += 1;
 			}
 			
-			return _value.substr(start, position - start);
+			return value.substr(start, position - start);
 		}
 	}
 	
 	std::string Path::extension() const
 	{
-		if (_value.empty()) return "";
+		if (value.empty()) return "";
 		
-		auto position = _value.rfind(SEPARATOR);
+		auto position = value.rfind(SEPARATOR);
 		
 		if (position == std::string::npos) {
 			position = 0;
@@ -172,11 +160,11 @@ namespace URI
 			position += 1;
 		}
 		
-		for (auto i = _value.size() - 1; i > position; i -= 1) {
-			if (_value[i] == '.') {
+		for (auto i = value.size() - 1; i > position; i -= 1) {
+			if (value[i] == '.') {
 				auto offset = i + 1;
 				
-				return _value.substr(offset, _value.size() - offset);
+				return value.substr(offset, value.size() - offset);
 			}
 		}
 		
@@ -184,6 +172,6 @@ namespace URI
 	}
 	
 	std::ostream & operator<<(std::ostream & output, const Path & path) {
-		return output << path.value();
+		return output << path.value;
 	}
 }

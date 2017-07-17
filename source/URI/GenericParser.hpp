@@ -1,5 +1,5 @@
 //
-//  Parser.hpp
+//  GenericParser.hpp
 //  File file is part of the "URI" project and released under the MIT License.
 //
 //  Created by Samuel Williams on 15/7/2017.
@@ -14,11 +14,11 @@ namespace URI
 {
 	typedef unsigned char Byte;
 	
-	class Parser
+	class GenericParser
 	{
 	public:
-		Parser(Generic & generic);
-		virtual ~Parser();
+		GenericParser(Generic & generic);
+		virtual ~GenericParser();
 		
 		std::size_t parse(const Byte * begin, const Byte * end);
 		

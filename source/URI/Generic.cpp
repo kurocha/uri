@@ -8,11 +8,23 @@
 
 #include "Generic.hpp"
 
+#include "GenericParser.hpp"
+
 #include <stdexcept>
 #include <iostream>
 
 namespace URI
 {
+	Generic Generic::parse(const std::string & value)
+	{
+		Generic generic;
+		GenericParser parser(generic);
+		
+		parser.parse(value);
+		
+		return generic;
+	}
+	
 	std::ostream & operator<<(std::ostream & output, const Generic & generic)
 	{
 		if (!generic.scheme.empty()) {
@@ -33,13 +45,8 @@ namespace URI
 			}
 		}
 		
-		if (!generic.path.empty()) {
-			output << generic.path;
-		}
-		
-		if (!generic.query.empty()) {
-			output << '?' << generic.query;
-		}
+		output << generic.path;
+		output << generic.query;
 		
 		if (!generic.fragment.empty()) {
 			output << '#' << generic.fragment;
@@ -56,6 +63,26 @@ namespace URI
 	bool Generic::operator!=(const Generic & other) const noexcept
 	{
 		return !(*this == other);
+	}
+	
+	Generic Generic::operator+(const Generic & other)
+	{
+		if (other.is_absolute()) {
+			return other;
+		}
+		
+		Generic result = *this;
+		
+		result.query = other.query;
+		result.fragment = other.fragment;
+		
+		if (other.path.is_absolute()) {
+			result.path = other.path;
+		} else {
+			result.path = path + other.path;
+		}
+		
+		return result;
 	}
 	
 	bool is_pchar(unsigned char c)
