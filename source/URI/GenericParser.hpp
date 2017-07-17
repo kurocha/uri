@@ -12,26 +12,10 @@
 
 namespace URI
 {
-	typedef unsigned char Byte;
-	
-	class GenericParser
+	namespace GenericParser
 	{
-	public:
-		GenericParser(Generic & generic);
-		virtual ~GenericParser();
+		using Byte = unsigned char;
 		
-		std::size_t parse(const Byte * begin, const Byte * end);
-		
-		void parse(const std::string & string) {
-			auto result = parse((const Byte *)string.data(), (const Byte *)string.data() + string.size());
-			
-			if (result != string.size())
-				throw std::invalid_argument("could not parse uri completely");
-		}
-	
-	private:
-		Generic & _generic;
-		
-		int _cs;
-	};
+		std::size_t parse(const Byte * begin, const Byte * end, Generic & generic);
+	}
 }

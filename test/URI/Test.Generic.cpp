@@ -33,18 +33,6 @@ namespace URI
 			}
 		},
 		
-		{"it can percent encode non-pchars",
-			[](UnitTest::Examiner & examiner) {
-				examiner.expect(encode("foo bar")) == "foo%20bar";
-			}
-		},
-		
-		{"it can percent decode",
-			[](UnitTest::Examiner & examiner) {
-				examiner.expect(decode("foo%20bar")) == "foo bar";
-			}
-		},
-		
 		{"it can add absolute uris",
 			[](UnitTest::Examiner & examiner) {
 				auto a1 = Generic::parse("http://www.google.com");

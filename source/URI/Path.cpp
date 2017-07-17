@@ -79,6 +79,30 @@ namespace URI
 		return result;
 	}
 
+	std::vector<std::string> Path::to_vector() const
+	{
+		std::vector<std::string> result;
+		
+		auto current = value.begin();
+		auto last = current;
+		
+		for (; current != value.end(); ++current) {
+			if (*current == SEPARATOR) {
+				result.push_back(Encoding::decode(std::string(last, current)));
+				
+				last = current+1;
+			}
+		}
+		
+		if (last != current) {
+			result.push_back(Encoding::decode(std::string(last, current)));
+		} else {
+			result.push_back("");
+		}
+		
+		return result;
+	}
+
 	bool Path::is_absolute() const {
 		return !value.empty() && value.front() == SEPARATOR;
 	}

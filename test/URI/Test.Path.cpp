@@ -66,5 +66,41 @@ namespace URI
 				examiner.expect(relative.simplify()) == "/apples/john.png";
 			}
 		},
+		
+		{"it can extract decoded elements of directory",
+			[](UnitTest::Examiner & examiner){
+				auto base = Path("/apples%20oranges/");
+				
+				auto components = base.to_vector();
+				
+				examiner.expect(components.size()) == 3;
+				examiner.expect(components[0]) == "";
+				examiner.expect(components[1]) == "apples oranges";
+				examiner.expect(components[2]) == "";
+			}
+		},
+		
+		{"it can extract decoded elements of basename",
+			[](UnitTest::Examiner & examiner){
+				auto base = Path("/apples%2Foranges");
+				
+				auto components = base.to_vector();
+				
+				examiner.expect(components.size()) == 2;
+				examiner.expect(components[0]) == "";
+				examiner.expect(components[1]) == "apples/oranges";
+			}
+		},
+		
+		{"it can extract decoded elements of empty path",
+			[](UnitTest::Examiner & examiner){
+				auto base = Path("");
+				
+				auto components = base.to_vector();
+				
+				examiner.expect(components.size()) == 1;
+				examiner.expect(components[0]) == "";
+			}
+		},
 	};
 }

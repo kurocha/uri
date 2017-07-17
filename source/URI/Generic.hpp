@@ -38,9 +38,5 @@ namespace URI
 		Generic operator+(const Generic & other);
 	};
 	
-	// According to https://tools.ietf.org/html/rfc3986#section-3.3, we escape non-pchar using % encoding.
-	std::string encode(const std::string & string);
-	std::string decode(const std::string & string);
-	
 	std::ostream & operator<<(std::ostream &, const Generic &);
 }

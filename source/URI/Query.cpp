@@ -8,6 +8,8 @@
 
 #include "Query.hpp"
 
+#include "QueryParser.hpp"
+
 #include <iostream>
 
 namespace URI
@@ -20,6 +22,20 @@ namespace URI
 		
 		// Join them together:
 		return value + '&' + other.value;
+	}
+	
+	std::multimap<std::string, std::string> Query::to_map() const
+	{
+		using namespace QueryParser;
+		
+		NamedValues named_values;
+		
+		auto result = parse((const Byte *)value.data(), (const Byte *)value.data() + value.size(), named_values);
+		
+		if (result != value.size())
+			throw std::invalid_argument("could not parse entire string");
+		
+		return named_values;
 	}
 	
 	std::ostream & operator<<(std::ostream & output, const Query & query)

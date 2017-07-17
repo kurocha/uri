@@ -8,7 +8,10 @@
 
 #pragma once
 
+#include "Encoding.hpp"
+
 #include <string>
+#include <vector>
 
 namespace URI
 {
@@ -16,12 +19,17 @@ namespace URI
 	struct Path {
 		constexpr static const char SEPARATOR = '/';
 		
+		std::string value;
+		
 		Path() {}
 		
 		template <typename ValueT>
 		Path(const ValueT & value_) : value(value_) {}
 		
-		std::string value;
+		template <typename IteratorT>
+		Path(IteratorT begin, IteratorT end) : Path(Encoding::encode_path(begin, end)) {}
+		
+		std::vector<std::string> to_vector() const;
 		
 		bool empty () const noexcept {return value.empty();}
 		explicit operator bool() const noexcept {return !empty();}
