@@ -11,7 +11,6 @@
 #include "GenericParser.hpp"
 
 #include <stdexcept>
-#include <iostream>
 
 namespace URI
 {
