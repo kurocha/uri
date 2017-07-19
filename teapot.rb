@@ -70,10 +70,9 @@ end
 
 # Configurations
 
-define_configuration "uri" do |configuration|
+define_configuration "development" do |configuration|
 	configuration[:source] = "https://github.com/kurocha"
-	
-	configuration.require "ragel"
+	configuration.import "uri"
 	
 	# Provides all the build related infrastructure:
 	configuration.require "platforms"
@@ -86,4 +85,9 @@ define_configuration "uri" do |configuration|
 	configuration.require "generate-cpp-class"
 	configuration.require 'generate-project'
 	configuration.require 'generate-travis'
+end
+
+define_configuration "uri" do |configuration|
+	configuration.public!
+	configuration.require "ragel"
 end
