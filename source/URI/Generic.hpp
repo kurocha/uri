@@ -19,8 +19,11 @@ namespace URI
 	struct Generic
 	{
 		Generic() = default;
+		Generic(const Generic &) = default;
+		Generic(Generic &&) = default;
+		
+		// Parse the given string.
 		Generic(const std::string & value);
-		Generic(const char * value) : Generic(std::string(value)) {}
 		
 		std::string scheme;
 		std::string userinfo;

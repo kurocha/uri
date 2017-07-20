@@ -29,7 +29,7 @@ namespace URI
 				std::string remote = "http://s3.fakeamazon.com/data/floop.jpg?AccessKey[]=BLEEPBLOOP&SignatureHcM%2D1Ius%3D";
 				std::string target = "/render?remote_uri=" + Encoding::encode(remote);
 				
-				auto target_uri = URI::Generic::parse(target);
+				auto target_uri = URI::Generic(target);
 
 				auto arguments = target_uri.query.to_map();
 				auto remote_uri = arguments.find("remote_uri");

@@ -31,7 +31,7 @@ The project can be checked by running unit tests:
 To parse a URI:
 
 ```c++
-auto uri = URI::Generic::parse("http://localhost/index.html?foo=bar");
+auto uri = URI::Generic("http://localhost/index.html?foo=bar");
 
 uri.scheme == "http";
 uri.host == "localhost";
