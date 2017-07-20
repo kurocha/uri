@@ -22,8 +22,15 @@ namespace URI
 		Generic(const Generic &) = default;
 		Generic(Generic &&) = default;
 		
+		Generic(const unsigned char * begin, const unsigned char * end);
+		
+		using Byte = unsigned char;
+		
 		// Parse the given string.
-		Generic(const std::string & value);
+		Generic(const std::string & value) : Generic(reinterpret_cast<const Byte *>(value.data()), reinterpret_cast<const Byte *>(value.data()) + value.size()) {}
+		
+		template <std::size_t SIZE>
+		Generic(const char (&value)[SIZE]) : Generic(reinterpret_cast<const Byte *>(value), reinterpret_cast<const Byte *>(value) + SIZE - 1) {}
 		
 		std::string scheme;
 		std::string userinfo;
