@@ -48,6 +48,17 @@ namespace URI
 		bool operator!=(const Generic & other) const noexcept;
 		
 		Generic operator+(const Generic & other) const;
+		
+	protected:
+		Generic(
+			const std::string & scheme_,
+			const std::string & userinfo_,
+			const std::string & host_,
+			const std::string & port_,
+			const Path & path_,
+			const Query & query_,
+			const std::string & fragment_
+		) : scheme(scheme_), userinfo(userinfo_), host(host_), port(port_), path(path_), query(query_), fragment(fragment_) {}
 	};
 	
 	std::ostream & operator<<(std::ostream &, const Generic &);
