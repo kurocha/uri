@@ -14,18 +14,14 @@
 
 namespace URI
 {
-	Generic Generic::parse(const std::string & value)
+	Generic::Generic(const std::string & value)
 	{
 		using namespace GenericParser;
 		
-		Generic generic;
-		
-		auto result = GenericParser::parse((const Byte *)value.data(), (const Byte *)value.data() + value.size(), generic);
+		auto result = GenericParser::parse((const Byte *)value.data(), (const Byte *)value.data() + value.size(), *this);
 		
 		if (result != value.size())
 			throw std::invalid_argument("could not parse entire string");
-		
-		return generic;
 	}
 	
 	std::ostream & operator<<(std::ostream & output, const Generic & generic)
@@ -68,7 +64,7 @@ namespace URI
 		return !(*this == other);
 	}
 	
-	Generic Generic::operator+(const Generic & other)
+	Generic Generic::operator+(const Generic & other) const
 	{
 		if (other.is_absolute()) {
 			return other;

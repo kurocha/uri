@@ -18,7 +18,9 @@ namespace URI
 {
 	struct Generic
 	{
-		static Generic parse(const std::string & value);
+		Generic() = default;
+		Generic(const std::string & value);
+		Generic(const char * value) : Generic(std::string(value)) {}
 		
 		std::string scheme;
 		std::string userinfo;
@@ -35,7 +37,7 @@ namespace URI
 		bool operator==(const Generic & other) const noexcept;
 		bool operator!=(const Generic & other) const noexcept;
 		
-		Generic operator+(const Generic & other);
+		Generic operator+(const Generic & other) const;
 	};
 	
 	std::ostream & operator<<(std::ostream &, const Generic &);
