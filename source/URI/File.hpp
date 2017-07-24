@@ -16,5 +16,6 @@ namespace URI
 	{
 		// Convert a local path to a URI encoded path.
 		File(const Path & path_) : Generic("file", "", "", "", path_, "", "") {}
+		File(const std::string & path_) : File(Path(path_)) {}
 	};
 }
