@@ -22,6 +22,8 @@ namespace URI
 		Generic(const Generic &) = default;
 		Generic(Generic &&) = default;
 		
+		Generic & operator=(const Generic & other) = default;
+		
 		Generic(const unsigned char * begin, const unsigned char * end);
 		
 		using Byte = unsigned char;
@@ -48,6 +50,9 @@ namespace URI
 		bool operator!=(const Generic & other) const noexcept;
 		
 		Generic operator+(const Generic & other) const;
+		
+		bool empty() const noexcept {return host.empty() && path.empty();}
+		explicit operator bool() const noexcept {return !empty();}
 		
 	protected:
 		Generic(
