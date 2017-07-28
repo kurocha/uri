@@ -63,6 +63,10 @@ namespace URI
 				auto encoded = Encoding::encode_path("I/♥/You", '/', false);
 				
 				examiner.expect(encoded) == "I/%E2%99%A5/You";
+				
+				auto decoded = Encoding::decode_path(encoded, '/');
+				
+				examiner.expect(decoded) == "I/♥/You";
 			}
 		},
 	};
