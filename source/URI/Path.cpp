@@ -10,6 +10,8 @@
 
 namespace URI
 {
+	using namespace Encoding;
+	
 	// Pop a single path element:
 	static void pop(std::string & path, char separator)
 	{

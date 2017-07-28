@@ -41,7 +41,7 @@ namespace URI
 		
 		bool is_path_unreserved(unsigned char c)
 		{
-			return !is_special(c) && c != '?' && c != '/';
+			return !is_special(c) && c != '?' && c != SEPARATOR;
 		}
 		
 		static char to_hex(unsigned value) {
@@ -86,28 +86,93 @@ namespace URI
 		
 		std::string decode(const std::string & input)
 		{
-			std::string output;
-			output.reserve(input.size());
+			std::string buffer;
+			buffer.reserve(input.size());
 			
-			auto i = input.begin();
-			for (; i < input.end() - 2; i++) {
-				if (*i == '%') {
-					char character = from_hex(*++i) * 16;
-					character += from_hex(*++i);
+			auto current = input.begin();
+			auto end = input.end();
+			
+			while (current != end) {
+				if (*current == '%') {
+					if ((end - current) < 2)
+						throw std::invalid_argument("invalid percent encoding!");
 					
-					output += character;
+					char character = from_hex(*++current) * 16;
+					character += from_hex(*++current);
+					
+					buffer += character;
 				} else {
-					output += *i;
+					buffer += *current;
 				}
-			}
-			
-			for (; i < input.end(); i++) {
-				if (*i == '%') throw std::invalid_argument("invalid percent encoding");
 				
-				output += *i;
+				++current;
 			}
 			
-			return output;
+			return buffer;
+		}
+		
+		std::string encode_path(const std::string & native_path, char separator, bool directory, bool(*is_safe)(unsigned char))
+		{
+			std::string buffer;
+			buffer.reserve(native_path.size());
+			
+			auto current = native_path.begin();
+			auto end = native_path.end();
+			
+			while (current != end) {
+				if (*current == separator) {
+					// Encode native separator as URI path separator:
+					buffer += SEPARATOR;
+				} else if (!is_safe(*current)) {
+					// Otherwise, if it's an unsafe character, we encode it using percent-escape:
+					auto value = (unsigned char)*current;
+					buffer += '%';
+					buffer += to_hex(value / 16);
+					buffer += to_hex(value % 16);
+				} else {
+					// Otherwise it's fine to just append it:
+					buffer += *current;
+				}
+				
+				++current;
+			}
+			
+			// If this is a directory, we append a trailing separator:
+			if (directory && buffer.back() != SEPARATOR) {
+				buffer += SEPARATOR;
+			}
+			
+			return buffer;
+		}
+		
+		std::string decode_path(const std::string & path, char separator)
+		{
+			std::string buffer;
+			buffer.reserve(path.size());
+			
+			auto current = path.begin();
+			auto end = path.end();
+			
+			while (current != end) {
+				if (*current == '%') {
+					if ((end - current) < 2)
+						throw std::invalid_argument("invalid percent encoding!");
+					
+					char character = from_hex(*++current) * 16;
+					character += from_hex(*++current);
+					
+					if (character == separator)
+						throw std::invalid_argument("cannot represent encoded separator!");
+					
+					buffer += character;
+				} else {
+					buffer += *current;
+				}
+				
+				++current;
+			}
+			
+			return buffer;
 		}
 	}
 }

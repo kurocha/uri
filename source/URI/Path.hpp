@@ -17,8 +17,6 @@ namespace URI
 {
 	// Assumes percent encoded path components.
 	struct Path {
-		constexpr static const char SEPARATOR = '/';
-		
 		std::string value;
 		
 		Path() {}

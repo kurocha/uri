@@ -15,6 +15,8 @@ namespace URI
 {
 	namespace Encoding
 	{
+		constexpr const unsigned char SEPARATOR = '/';
+		
 		// Characters which can appear anywhere in an URI without any encoding.
 		bool is_unreserved(unsigned char);
 		
@@ -62,12 +64,18 @@ namespace URI
 			}
 			
 			while (begin != end) {
-				buffer << '/' << encode(*begin, is_safe);
+				buffer << SEPARATOR << encode(*begin, is_safe);
 				
 				++begin;
 			}
 			
 			return buffer.str();
 		}
+		
+		// Given a native path using the specified separator, encode it into a URI path, escaping non-safe characters as required.
+		std::string encode_path(const std::string & native_path, char separator, bool directory, bool(*is_safe)(unsigned char) = is_path_unreserved);
+		
+		// Given a URI path, decode it to a native path. If the path contains encoded separators, an exception will be thrown.
+		std::string decode_path(const std::string & path, char separator);
 	};
 }

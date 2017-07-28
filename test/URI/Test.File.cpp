@@ -23,5 +23,14 @@ namespace URI
 				examiner.expect(uri.path) == "foo/bar";
 			}
 		},
+		
+		{"it can generate directory paths",
+			[](UnitTest::Examiner & examiner) {
+				URI::File uri("foo/bar", true);
+				
+				examiner.expect(uri.scheme) == "file";
+				examiner.expect(uri.path) == "foo/bar/";
+			}
+		}
 	};
 }

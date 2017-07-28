@@ -30,7 +30,7 @@ namespace URI
 		},
 		
 		{"it can encode query",
-			[](UnitTest::Examiner & examiner){
+			[](UnitTest::Examiner & examiner) {
 				std::map<std::string, std::string> arguments;
 				arguments["x[]"] = "http://www.google.com/search?q=lucid";
 				
@@ -41,12 +41,28 @@ namespace URI
 		},
 		
 		{"it can encode path",
-			[](UnitTest::Examiner & examiner){
+			[](UnitTest::Examiner & examiner) {
 				std::vector<std::string> entries = {"blog", "2017", "Apples/oranges & the path to fruit salad!"};
 				
 				auto path = Encoding::encode_path(entries.begin(), entries.end());
 				
 				examiner.expect(path) == "blog/2017/Apples%2Foranges%20&%20the%20path%20to%20fruit%20salad!";
+			}
+		},
+		
+		{"it can encode native path",
+			[](UnitTest::Examiner & examiner) {
+				auto encoded = Encoding::encode_path("foo:bar", ':', true);
+				
+				examiner.expect(encoded) == "foo/bar/";
+			}
+		},
+		
+		{"it can encode native path containing utf8",
+			[](UnitTest::Examiner & examiner) {
+				auto encoded = Encoding::encode_path("I/♥/You", '/', false);
+				
+				examiner.expect(encoded) == "I/%E2%99%A5/You";
 			}
 		},
 	};

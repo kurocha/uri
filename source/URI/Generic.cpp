@@ -14,11 +14,11 @@
 
 namespace URI
 {
-	Generic::Generic(const unsigned char * begin, const unsigned char * end)
+	Generic::Generic(const char * begin, const char * end)
 	{
 		using namespace GenericParser;
 		
-		auto result = GenericParser::parse(begin, end, *this);
+		auto result = GenericParser::parse((unsigned char *)begin, (unsigned char *)end, *this);
 		
 		if (result != (end-begin))
 			throw std::invalid_argument("could not parse entire string");
