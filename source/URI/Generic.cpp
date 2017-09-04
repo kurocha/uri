@@ -64,6 +64,32 @@ namespace URI
 		return !(*this == other);
 	}
 	
+	bool Generic::operator<(const Generic & other) const noexcept
+	{
+		if (scheme < other.scheme)
+			return true;
+		
+		if (userinfo < other.userinfo)
+			return true;
+		
+		if (host < other.host)
+			return true;
+		
+		if (port < other.port)
+			return true;
+		
+		if (path < other.path)
+			return true;
+		
+		if (query < other.query)
+			return true;
+		
+		if (fragment < other.fragment)
+			return true;
+		
+		return false;
+	}
+	
 	Generic Generic::operator+(const Generic & other) const
 	{
 		if (other.is_absolute()) {

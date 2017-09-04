@@ -48,6 +48,8 @@ namespace URI
 		bool operator==(const Generic & other) const noexcept;
 		bool operator!=(const Generic & other) const noexcept;
 		
+		bool operator<(const Generic & other) const noexcept;
+		
 		Generic operator+(const Generic & other) const;
 		
 		bool empty() const noexcept {return host.empty() && path.empty();}
