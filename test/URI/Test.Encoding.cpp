@@ -31,12 +31,25 @@ namespace URI
 		
 		{"it can encode query",
 			[](UnitTest::Examiner & examiner) {
-				std::map<std::string, std::string> arguments;
-				arguments["x[]"] = "http://www.google.com/search?q=lucid";
+				std::map<std::string, std::string> arguments = {
+					{"x[]", "http://www.google.com/search?q=lucid"}
+				};
 				
 				auto query = Encoding::encode_query(arguments.begin(), arguments.end());
 				
 				examiner.expect(query) == "x[]=http://www.google.com/search%3Fq%3Dlucid";
+			}
+		},
+		
+		{"it doesn't encode unreserved characters",
+			[](UnitTest::Examiner & examiner) {
+				std::map<std::string, std::string> arguments = {
+					{"clip", "{{1,2},{3,4}}"}
+				};
+				
+				auto query = Encoding::encode_query(arguments.begin(), arguments.end());
+				
+				examiner.expect(query) == "clip={{1,2},{3,4}}";
 			}
 		},
 		
