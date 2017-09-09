@@ -129,6 +129,17 @@ namespace URI
 			}
 		},
 		
+		{"it can parse curly brackets",
+			[](UnitTest::Examiner & examiner) {
+				std::string text = "render?clip={{0,0},{100,100}}";
+				auto generic = Generic(text);
+				
+				examiner.expect(generic.path) == "render";
+				examiner.expect(generic.query) == "clip={{0,0},{100,100}}";
+			}
+		}
+		
+		// The UTF8 character needs to be encoded for this test to pass.
 		// {"it can parse unicode",
 		// 	[](UnitTest::Examiner & examiner) {
 		// 		std::string text = "//welcome/index?utf8=✓";

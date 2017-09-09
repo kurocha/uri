@@ -13,7 +13,7 @@
 	# As discussed here, '[' and ']' are commonly used in the query part of a URI, along with '|', ':' and '@'.
 	# https://stackoverflow.com/questions/11490326/is-array-syntax-using-square-brackets-in-url-query-strings-valid
 	# Thus, we allow this implementation to parse those characters as if they were unreserved.
-	unsafe = ":" | "@" | '[' | ']' | '|';
+	unsafe = ":" | "@" | '[' | ']' | '|' | '{' | '}';
 	
 	decimal_octet =
 		digit | # 0-9
