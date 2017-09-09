@@ -55,6 +55,9 @@ namespace URI
 		bool empty() const noexcept {return host.empty() && path.empty();}
 		explicit operator bool() const noexcept {return !empty();}
 		
+		// Extract the host part of the URI. Unwraps the square brackets around IPv6 addresses.
+		std::string hostname() const;
+		
 	protected:
 		Generic(
 			const std::string & scheme_,

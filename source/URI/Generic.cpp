@@ -109,4 +109,15 @@ namespace URI
 		
 		return result;
 	}
+	
+	std::string Generic::hostname() const
+	{
+		// Must have at least 2 characters to unwrap:
+		if (host.size() < 2) return host;
+		
+		if (host.front() == '[' && host.back() == ']')
+			return host.substr(1, host.size()-2);
+		else
+			return host;
+	}
 }
