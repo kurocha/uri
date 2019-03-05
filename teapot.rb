@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-teapot_version "1.0"
+teapot_version "3.0"
 
 # Project Metadata
 
@@ -21,12 +21,22 @@ end
 
 # Build Targets
 
+define_target 'uri-headers' do |target|
+	# Because we need to compile the parsers (in a cache root) below, which need to access headers.
+	target.provides "Headers/URI" do
+		append header_search_paths target.package.path + 'source'
+	end
+end
+
 define_target 'uri-library' do |target|
-	target.build do
+	target.depends "Language/C++14"
+	
+	target.depends "Headers/URI", public: true
+	target.depends "Convert/Ragel"
+	
+	target.provides "Library/URI" do
 		source_root = target.package.path + 'source'
 		cache_prefix = environment[:build_prefix] + environment.checksum
-		
-		copy headers: source_root.glob('URI/**/*.hpp')
 		
 		parsers = source_root.glob('URI/**/*Parser.rl')
 		
@@ -35,37 +45,23 @@ define_target 'uri-library' do |target|
 			convert source_file: file, destination_path: implementation_file
 		end
 		
-		build static_library: "URI", source_files: source_root.glob('URI/**/*.cpp') + implementation_files
-	end
-	
-	target.depends 'Build/Files'
-	target.depends 'Build/Clang'
-	
-	target.depends :platform
-	target.depends "Language/C++14", private: true
-	target.depends "Convert/Ragel", private: true
-	
-	target.provides "Library/URI" do
-		append linkflags [
-			->{install_prefix + 'lib/libURI.a'},
-		]
+		library_path = build static_library: "URI", source_files: (source_root.glob('URI/**/*.cpp') + implementation_files)
+		
+		append linkflags library_path
 	end
 end
 
 define_target "uri-tests" do |target|
-	target.build do |*arguments|
-		test_root = target.package.path + 'test'
-		
-		run tests: "URI", source_files: test_root.glob('URI/**/*.cpp'), arguments: arguments
-	end
-	
-	target.depends :platform
-	target.depends "Language/C++14", private: true
+	target.depends "Language/C++14"
 	
 	target.depends "Library/UnitTest"
 	target.depends "Library/URI"
 
-	target.provides "Test/URI"
+	target.provides "Test/URI" do |*arguments|
+		test_root = target.package.path + 'test'
+		
+		run tests: "URI", source_files: test_root.glob('URI/**/*.cpp'), arguments: arguments
+	end
 end
 
 # Configurations
