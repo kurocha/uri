@@ -19,16 +19,16 @@ namespace URI
 		
 		{"it is relative/absolute/directory",
 			[](UnitTest::Examiner & examiner) {
-				examiner << p1 << " is absolute";
+				examiner << p1 << " is absolute" << std::endl;
 				examiner.check(p1.is_absolute());
 				
-				examiner << p2 << " is relative";
+				examiner << p2 << " is relative" << std::endl;
 				examiner.check(!p2.is_absolute());
 				
-				examiner << p2 << " is a directory";
+				examiner << p2 << " is a directory" << std::endl;
 				examiner.check(p2.is_directory());
 				
-				examiner << p3 << " is not a directory";
+				examiner << p3 << " is not a directory" << std::endl;
 				examiner.check(!p3.is_directory());
 			}
 		},

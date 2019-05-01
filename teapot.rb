@@ -52,15 +52,15 @@ define_target 'uri-library' do |target|
 end
 
 define_target "uri-tests" do |target|
-	target.depends "Language/C++14"
-	
 	target.depends "Library/UnitTest"
 	target.depends "Library/URI"
-
+	
+	target.depends "Language/C++14"
+	
 	target.provides "Test/URI" do |*arguments|
 		test_root = target.package.path + 'test'
 		
-		run tests: "URI", source_files: test_root.glob('URI/**/*.cpp'), arguments: arguments
+		run source_files: test_root.glob('URI/**/*.cpp'), arguments: arguments
 	end
 end
 
