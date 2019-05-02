@@ -48,7 +48,7 @@ namespace URI
 			}
 			
 			action error {
-				throw std::invalid_argument("could not parse uri");
+				throw std::invalid_argument("could not parse uri string");
 			}
 			
 			# A URI parser as defined by RFC3986.

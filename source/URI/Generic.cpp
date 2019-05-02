@@ -21,7 +21,7 @@ namespace URI
 		auto result = GenericParser::parse((unsigned char *)begin, (unsigned char *)end, *this);
 		
 		if (result != (end-begin))
-			throw std::invalid_argument("could not parse entire string");
+			throw std::invalid_argument("could not parse entire uri string");
 	}
 	
 	std::ostream & operator<<(std::ostream & output, const Generic & generic)

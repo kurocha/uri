@@ -33,7 +33,7 @@ namespace URI
 		auto result = parse((const Byte *)value.data(), (const Byte *)value.data() + value.size(), named_values);
 		
 		if (result != value.size())
-			throw std::invalid_argument("could not parse entire string");
+			throw std::invalid_argument("could not parse entire query string");
 		
 		return named_values;
 	}
