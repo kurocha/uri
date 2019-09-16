@@ -20,7 +20,7 @@ namespace URI
 		
 		auto result = GenericParser::parse((unsigned char *)begin, (unsigned char *)end, *this);
 		
-		if (result != (end-begin))
+		if (result != std::size_t(end-begin))
 			throw std::invalid_argument("could not parse entire uri string");
 	}
 	
