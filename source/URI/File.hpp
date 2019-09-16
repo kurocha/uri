@@ -23,16 +23,18 @@ namespace URI
 #endif
 	};
 	
+	// Native URIs represent paths to local files. They must use the `file:` scheme.
+	// The normal pattern is to construct them using generic URIs, which will generate the correct `native_path` strings.
 	template <Platform PLATFORM = Platform::DEFAULT>
 	struct Native : public Generic
 	{
-		using Generic::Generic;
-		
-		// Copy the URI, but throws an exception if the other URI is not using the "file" scheme.
+		// Copy the URI, but throws an exception if the other URI is not using the `file:` scheme.
 		Native(const Generic & other);
 		
+		using Generic::Generic;
+		
 		// Creates a URI with the file scheme, and the given native path.
-		Native(const std::string & native_path, bool directory = false);
+		Native(const std::string & native_path, bool directory);
 		
 		std::string native_path() const;
 	};

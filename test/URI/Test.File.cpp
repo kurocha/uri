@@ -17,7 +17,7 @@ namespace URI
 		
 		{"it can construct file url from path",
 			[](UnitTest::Examiner & examiner) {
-				URI::File uri("foo/bar");
+				URI::File uri("foo/bar", false);
 				
 				examiner.expect(uri.scheme) == "file";
 				examiner.expect(uri.path) == "foo/bar";
