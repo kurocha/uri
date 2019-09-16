@@ -31,8 +31,6 @@ namespace URI
 		// Copy the URI, but throws an exception if the other URI is not using the `file:` scheme.
 		Native(const Generic & other);
 		
-		using Generic::Generic;
-		
 		// Creates a URI with the file scheme, and the given native path.
 		Native(const std::string & native_path, bool directory);
 		
