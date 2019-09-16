@@ -10,24 +10,44 @@
 
 namespace URI
 {
-	Native<Platform::UNIX>::Native(const std::string & path, bool directory) : Generic("file", "", "", "", Encoding::encode_path(path, '/', directory), "", "")
+	template <Platform PLATFORM>
+	Native<PLATFORM>::Native(const Generic & other) : Generic(other)
+	{
+		if (this->scheme != "file") {
+			throw std::invalid_argument("non-file URI!");
+		}
+	}
+	
+	template<>
+	Native<Platform::UNIX>::Native(const std::string & native_path, bool directory) : Generic("file", "", "", "", Encoding::encode_path(native_path, '/', directory), "", "")
 	{
 	}
 	
-	std::string Native<Platform::UNIX>::native_path(const URI::Generic & uri)
+	template<>
+	std::string Native<Platform::UNIX>::native_path() const
 	{
-		if (uri.scheme != "file") {
+		if (this->scheme != "file") {
 			throw std::invalid_argument("Cannot generate native path from non-file URI!");
 		}
 		
-		return Encoding::decode_path(uri.path.value, '/');
+		return Encoding::decode_path(this->path.value, '/');
 	}
 	
-	// URI::File Native<Platform::UNIX>::Native(const std::string & path, bool directory)
-	// {
-	// }
-	// 
-	// std::string Native<Platform::UNIX>::path(const URI::Generic & uri)
-	// {
-	// }
+	template<>
+	Native<Platform::WINDOWS>::Native(const std::string & native_path, bool directory) : Generic("file", "", "", "", Encoding::encode_path(native_path, '\\', directory), "", "")
+	{
+	}
+	
+	template<>
+	std::string Native<Platform::WINDOWS>::native_path() const
+	{
+		if (this->scheme != "file") {
+			throw std::invalid_argument("Cannot generate native path from non-file URI!");
+		}
+		
+		return Encoding::decode_path(this->path.value, '\\');
+	}
+	
+	template struct Native<Platform::UNIX>;
+	template struct Native<Platform::WINDOWS>;
 }

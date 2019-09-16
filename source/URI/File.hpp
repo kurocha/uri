@@ -24,23 +24,18 @@ namespace URI
 	};
 	
 	template <Platform PLATFORM = Platform::DEFAULT>
-	struct Native {};
-	
-	template <>
-	struct Native<Platform::UNIX> : public URI::Generic
+	struct Native : public Generic
 	{
-		Native(const std::string & path, bool directory = false);
+		using Generic::Generic;
 		
-		static std::string native_path(const URI::Generic & uri);
+		// Copy the URI, but throws an exception if the other URI is not using the "file" scheme.
+		Native(const Generic & other);
+		
+		// Creates a URI with the file scheme, and the given native path.
+		Native(const std::string & native_path, bool directory = false);
+		
+		std::string native_path() const;
 	};
-	
-	// template <>
-	// struct Native<Platform::WINDOWS> : public URI::Generic
-	// {
-	// 	Native(const std::string & path, bool directory);
-	// 	
-	// 	static std::string native_path(const URI::Generic & uri);
-	// };
 	
 	using File = Native<>;
 }
