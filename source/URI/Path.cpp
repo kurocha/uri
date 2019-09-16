@@ -81,7 +81,7 @@ namespace URI
 		return result;
 	}
 
-	std::vector<std::string> Path::to_vector() const
+	std::vector<std::string> Path::to_vector() const noexcept
 	{
 		std::vector<std::string> result;
 		
@@ -104,7 +104,7 @@ namespace URI
 		
 		return result;
 	}
-
+	
 	bool Path::is_absolute() const {
 		return !value.empty() && value.front() == SEPARATOR;
 	}

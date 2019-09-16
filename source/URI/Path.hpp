@@ -27,7 +27,7 @@ namespace URI
 		template <typename IteratorT>
 		Path(IteratorT begin, IteratorT end) : Path(Encoding::encode_path(begin, end)) {}
 		
-		std::vector<std::string> to_vector() const;
+		std::vector<std::string> to_vector() const noexcept;
 		
 		bool empty () const noexcept {return value.empty();}
 		explicit operator bool() const noexcept {return !empty();}
