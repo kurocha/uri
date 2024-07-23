@@ -10,7 +10,7 @@
 
 namespace URI
 {
-	enum class Platform : std::uint8_t {
+	enum class Platform : unsigned char {
 		UNIX = '/',
 		WINDOWS = '\\',
 		
